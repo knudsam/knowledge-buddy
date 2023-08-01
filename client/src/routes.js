@@ -1,16 +1,8 @@
-import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 
 var routes = [
-  {
-    path: "/index",
-    name: "Home",
-    icon: "ni ni-tv-2 text-primary",
-    component: <Index />,
-    layout: "/admin",
-  },
   {
     path: "/user-profile",
     name: "User Profile",

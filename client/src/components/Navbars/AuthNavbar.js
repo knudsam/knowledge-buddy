@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "./KBlogo2.png"; 
 // reactstrap components
 import {
   UncontrolledCollapse,
