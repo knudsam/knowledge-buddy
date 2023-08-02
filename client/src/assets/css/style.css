@@ -1,0 +1,33 @@
+body {
+    background-color: #587291!important;
+}
+
+#sidenav-main{
+    background-color: #2F97C1 !important;
+}
+
+#sidebar-title {
+    color: #F8F4E3 !important;
+}
+
+.pt-0{
+    font-family: cursive !important;
+    font-size: larger !important;
+}
+
+.nav-link{
+    color: #F8F4E3 !important;
+    font-size: large !important;
+}
+
+.navbar-search-dark .form-control {
+    color: #F8F4E3 !important;
+}
+
+#the-heading {
+    color: #040403 !important;
+}
+
+#the-info {
+    color: #040403 !important; 
+}

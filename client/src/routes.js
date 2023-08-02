@@ -1,8 +1,16 @@
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
+import Index from "views/Index";
 
 var routes = [
+  {
+    path: "/index",
+    name: "Home",
+    icon: "ni ni-collection text-info",
+    component: <Index />,
+    layout: "/admin",
+  },
   {
     path: "/user-profile",
     name: "User Profile",
@@ -12,16 +20,9 @@ var routes = [
   },
   {
     path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
+    name: "Logout",
+    icon: "ni ni-user-run text-red",
     component: <Login />,
-    layout: "/auth",
-  },
-  {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: <Register />,
     layout: "/auth",
   },
 ];
