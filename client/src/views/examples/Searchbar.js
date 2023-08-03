@@ -37,13 +37,27 @@ const SearchBar = ({ onSelectBook }) => {
 
   return (
     <div>
-      <TextField
-        variant="outlined"
-        placeholder="Search books..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <Button variant="contained" onClick={handleSearch}>Search</Button>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <TextField 
+          variant="outlined"
+          placeholder="Search Books..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
+          style={{ flex: 1, marginRight: '8px', color: 'white' }} // Set color to white
+          InputProps={{
+            style: {
+              color: 'white', // Set input text color to white
+            },
+          }}
+        />
+        <Button variant="contained" onClick={handleSearch}>Search</Button>
+      </div>
+      < br/>
       <Grid container spacing={4}>
         {searchResults.map((book) => (
           <Grid item key={book.bookId} xs={12} sm={6} md={4} lg={3}>
@@ -59,7 +73,7 @@ const SearchBar = ({ onSelectBook }) => {
                   {book.title}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary">
-                  Authors: {book.authors.join(", ")}
+                  Author: {book.authors.join(", ")}
                 </Typography>
               </CardContent>
             </Card>
