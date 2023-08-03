@@ -44,7 +44,7 @@ const SearchBar = ({ onSelectBook }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <Button variant="contained" onClick={handleSearch}>Search</Button>
-      <Grid container spacing={3}>
+      <Grid container spacing={4}>
         {searchResults.map((book) => (
           <Grid item key={book.bookId} xs={12} sm={6} md={4} lg={3}>
             <Card onClick={() => onSelectBook(book)} sx={{ cursor: "pointer" }}>
