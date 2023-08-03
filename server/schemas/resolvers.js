@@ -10,6 +10,26 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    searchBooks: async (parent, { query }) => {
+      try {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        
+        // Extract relevant book data from the API response
+        const books = data.items.map(item => ({
+          authors: item.volumeInfo.authors || [],
+          description: item.volumeInfo.description || '',
+          bookId: item.id,
+          image: item.volumeInfo.imageLinks?.thumbnail || '',
+          link: item.volumeInfo.infoLink || '',
+          title: item.volumeInfo.title || '',
+        }));
+
+        return books;
+      } catch (error) {
+        throw new Error('Error searching for books');
+      }
+    },
   },
 
   Mutation: {
