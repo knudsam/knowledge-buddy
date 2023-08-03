@@ -19,9 +19,12 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/register", 
+    component: <Register />,
+    layout: "/auth",
+  },
+  {
     path: "/login",
-    name: "Logout",
-    icon: "ni ni-user-run text-red",
     component: <Login />,
     layout: "/auth",
   },

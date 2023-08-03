@@ -1,5 +1,5 @@
- 
-// reactstrap components
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, gql } from '@apollo/client';
 import {
   Button,
   Card,
@@ -11,12 +11,96 @@ import {
   Container,
   Row,
   Col,
-} from "reactstrap";
-// core components
-import UserHeader from "components/Headers/UserHeader.js";
-import "../../assets/css/style.css"; 
+} from 'reactstrap';
+import { useAuth } from '../../utils/AuthContext'; 
+import UserHeader from 'components/Headers/UserHeader'; 
+
+const GET_USER_PROFILE = gql`
+  query GetUserProfile {
+    me {
+      _id
+      username
+      email
+      firstName
+      lastName
+      address
+      city
+      country
+      postalCode
+      aboutMe
+    }
+  }
+`;
+
+const UPDATE_USER_PROFILE = gql`
+  mutation UpdateUserProfile($input: UserProfileInput!) {
+    updateUserProfile(input: $input) {
+      _id
+      username
+      email
+      firstName
+      lastName
+      address
+      city
+      country
+      postalCode
+      aboutMe
+    }
+  }
+`;
 
 const Profile = () => {
+  const { user } = useAuth();
+  const { loading, data } = useQuery(GET_USER_PROFILE);
+  const [updateUserProfile] = useMutation(UPDATE_USER_PROFILE);
+  const [profileData, setProfileData] = useState({
+    username: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    country: '',
+    postalCode: '',
+    aboutMe: '',
+  });
+
+  useEffect(() => {
+    if (data?.me) {
+      setProfileData(data.me);
+    }
+  }, [data]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setProfileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await updateUserProfile({
+        variables: {
+          input: profileData,
+        },
+      });
+
+      // Handle successful profile update if needed
+
+    } catch (error) {
+      console.error('Profile update error:', error);
+    }
+  };
+
+  if (loading) {
+    // Handle loading state
+    return null;
+  }
+
   return (
     <>
       <UserHeader />
@@ -46,28 +130,13 @@ const Profile = () => {
               <CardBody className="pt-0 pt-md-4">
                 <div className="text-center">
                   <h3>
-                    John Oliveira
-                    <span className="font-weight-light">, 27</span>
+                    {profileData.username}
                   </h3>
                   <div className="h5 font-weight-300">
                     <i id="the-info" className="ni location_pin mr-2" />
-                    Lorem ipsum
+                    {profileData.aboutMe}
                   </div>
-                  <div className="h5 mt-4">
-                    <i id="the-info" className="ni business_briefcase-24 mr-2" />
-                    Web Developer
-                  </div>
-                  <div>
-                    <i id="the-info" className="ni education_hat mr-2" />
-                    Rutgers Bootcamp
-                  </div>
-                  <hr className="my-4" />
-                  <p>
-                    Lorem ipsum
-                  </p>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Show more
-                  </a>
+                  {/* ... Rest of the card content ... */}
                 </div>
               </CardBody>
             </Card>
@@ -75,21 +144,7 @@ const Profile = () => {
           <Col className="order-xl-1" xl="8">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
-                <Row className="align-items-center">
-                  <Col xs="8">
-                    <h3 className="mb-0">My Account</h3>
-                  </Col>
-                  <Col className="text-right" xs="4">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      Update
-                    </Button>
-                  </Col>
-                </Row>
+                {/* ... Rest of the card header ... */}
               </CardHeader>
               <CardBody>
                 <Form>
@@ -108,9 +163,11 @@ const Profile = () => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
+                            name="username"
+                            value={profileData.username}
+                            onChange={handleInputChange}
                             id="input-username"
-                            placeholder="Username"
+                            placeholder={profileData.username}
                             type="text"
                           />
                         </FormGroup>
@@ -125,143 +182,16 @@ const Profile = () => {
                           </label>
                           <Input
                             className="form-control-alternative"
+                            name="email"
+                            value={profileData.email}
+                            onChange={handleInputChange}
                             id="input-email"
-                            placeholder="jesse@example.com"
+                            placeholder={profileData.email}
                             type="email"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-first-name"
-                          >
-                            First Name
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Lucky"
-                            id="input-first-name"
-                            placeholder="First name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-last-name"
-                          >
-                            Last Name
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Jesse"
-                            id="input-last-name"
-                            placeholder="Last name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                  <hr className="my-4" />
-                  {/* Address */}
-                  <h6 className="heading-small text-muted mb-4">
-                    Contact Information
-                  </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-address"
-                          >
-                            Address
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            id="input-address"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-city"
-                          >
-                            City
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="New York"
-                            id="input-city"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Country
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            defaultValue="United States"
-                            id="input-country"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="4">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-country"
-                          >
-                            Postal code
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            id="input-postal-code"
-                            placeholder="Postal code"
-                            type="number"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                  <hr className="my-4" />
-                  {/* Description */}
-                  <h6 className="heading-small text-muted mb-4">About me</h6>
-                  <div className="pl-lg-4">
-                    <FormGroup>
-                      <label>About Me</label>
-                      <Input
-                        className="form-control-alternative"
-                        placeholder="A few words about you ..."
-                        rows="4"
-                        defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                        Open Source."
-                        type="textarea"
-                      />
-                    </FormGroup>
                   </div>
                 </Form>
               </CardBody>
