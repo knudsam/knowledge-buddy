@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
+import { Card, CardContent, CardMedia, Typography, TextField, Button, Grid } from "@mui/material";
 
 export const SEARCH_BOOKS = gql`
   query SearchBooks($query: String!) {
@@ -14,7 +15,7 @@ export const SEARCH_BOOKS = gql`
   }
 `;
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSelectBook }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
 
@@ -36,18 +37,35 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <div>
-      <input
-        type="text"
+      <TextField
+        variant="outlined"
         placeholder="Search books..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
-      <ul>
+      <Button variant="contained" onClick={handleSearch}>Search</Button>
+      <Grid container spacing={3}>
         {searchResults.map((book) => (
-          <li key={book.bookId}>{book.title}</li>
+          <Grid item key={book.bookId} xs={12} sm={6} md={4} lg={3}>
+            <Card onClick={() => onSelectBook(book)} sx={{ cursor: "pointer" }}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={book.image}
+                alt={book.title}
+              />
+              <CardContent>
+                <Typography variant="h6" component="div">
+                  {book.title}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Authors: {book.authors.join(", ")}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </ul>
+      </Grid>
     </div>
   );
 };
