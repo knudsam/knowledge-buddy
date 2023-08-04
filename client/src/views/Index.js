@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { useQuery, ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { useQuery, ApolloProvider } from "@apollo/client";
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Container, Row, Col } from "reactstrap";
 import SearchBar, { SEARCH_BOOKS } from "./examples/Searchbar";
-
-const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql", // Update with your server's GraphQL endpoint
-  cache: new InMemoryCache(),
-});
+import client from "../graphql";
 
 const Index = (props) => {
   const [selectedBook, setSelectedBook] = useState(null);

@@ -1,5 +1,6 @@
 {
   "name": "knowledge-buddy",
+  "proxy": "http://localhost:3001",
   "version": "1.2.3",
   "description": "Knowledge buddy",
   "main": "index.js",
