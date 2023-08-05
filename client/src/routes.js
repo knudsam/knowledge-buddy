@@ -9,24 +9,24 @@ var routes = [
     name: "Home",
     icon: "ni ni-collection text-info",
     component: <Index />,
-    layout: "/admin",
+    
   },
   {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
-    layout: "/admin",
+    
   },
   {
     path: "/register", 
     component: <Register />,
-    layout: "/auth",
+    
   },
   {
     path: "/login",
     component: <Login />,
-    layout: "/auth",
+    
   },
 ];
 export default routes;
