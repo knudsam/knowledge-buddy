@@ -64,6 +64,8 @@ const Profile = () => {
     postalCode: '',
     aboutMe: '',
   });
+  const [readingList, setReadingList] = useState([]);
+  const [wishList, setWishList] = useState([]);
 
   useEffect(() => {
     if (data?.me) {
@@ -89,7 +91,7 @@ const Profile = () => {
         },
       });
 
-      // Handle successful profile update if needed
+     
 
     } catch (error) {
       console.error('Profile update error:', error);
@@ -97,7 +99,17 @@ const Profile = () => {
   };
 
   if (loading) {
-    // Handle loading state
+    return null;
+  }
+   const handleRemoveFromReadingList = () => {
+    setReadingList(readingList.filter(item => item !== profileData.username));
+  };
+
+  const handleRemoveFromWishList = () => {
+    setWishList(wishList.filter(item => item !== profileData.username));
+  };
+
+  if (loading) {
     return null;
   }
 
@@ -129,14 +141,11 @@ const Profile = () => {
               </Row>
               <CardBody className="pt-0 pt-md-4">
                 <div className="text-center">
-                  <h3>
-                    {profileData.username}
-                  </h3>
+                  <h3>{profileData.username}</h3>
                   <div className="h5 font-weight-300">
                     <i id="the-info" className="ni location_pin mr-2" />
                     {profileData.aboutMe}
                   </div>
-                  {/* ... Rest of the card content ... */}
                 </div>
               </CardBody>
             </Card>
@@ -144,56 +153,52 @@ const Profile = () => {
           <Col className="order-xl-1" xl="8">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
-                {/* ... Rest of the card header ... */}
+                <h3 className="mb-0">Reading List</h3>
               </CardHeader>
               <CardBody>
-                <Form>
-                  <h6 className="heading-small text-muted mb-4">
-                    User Information
-                  </h6>
-                  <div className="pl-lg-4">
-                    <Row>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-username"
-                          >
-                            Username
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            name="username"
-                            value={profileData.username}
-                            onChange={handleInputChange}
-                            id="input-username"
-                            placeholder={profileData.username}
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col lg="6">
-                        <FormGroup>
-                          <label
-                            className="form-control-label"
-                            htmlFor="input-email"
-                          >
-                            Email Address
-                          </label>
-                          <Input
-                            className="form-control-alternative"
-                            name="email"
-                            value={profileData.email}
-                            onChange={handleInputChange}
-                            id="input-email"
-                            placeholder={profileData.email}
-                            type="email"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </div>
-                </Form>
+                {readingList.length === 0 ? (
+                  <p>No items in the reading list.</p>
+                ) : (
+                  <ul>
+                    {readingList.map((item, index) => (
+                      <li key={index}>
+                        {item}
+                        <Button
+                          color="danger"
+                          size="sm"
+                          onClick={handleRemoveFromReadingList}
+                        >
+                          Remove
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </CardBody>
+            </Card>
+            <Card className="bg-secondary shadow mt-4">
+              <CardHeader className="bg-white border-0">
+                <h3 className="mb-0">Wish List</h3>
+              </CardHeader>
+              <CardBody>
+                {wishList.length === 0 ? (
+                  <p>No items in the wish list.</p>
+                ) : (
+                  <ul>
+                    {wishList.map((item, index) => (
+                      <li key={index}>
+                        {item}
+                        <Button
+                          color="danger"
+                          size="sm"
+                          onClick={handleRemoveFromWishList}
+                        >
+                          Remove
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </CardBody>
             </Card>
           </Col>
@@ -203,4 +208,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profile
