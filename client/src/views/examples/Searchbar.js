@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLazyQuery, gql } from "@apollo/client";
 import { Card, CardContent, CardMedia, Typography, TextField, Button, Grid } from "@mui/material";
 
-export const SEARCH_BOOKS = gql`
+const SEARCH_BOOKS = gql`
   query SearchBooks($query: String!) {
     searchBooks(query: $query) {
       authors
@@ -48,20 +48,23 @@ const SearchBar = ({ onSelectBook }) => {
               handleSearch();
             }
           }}
-          style={{ flex: 1, marginRight: '8px', color: 'white' }} // Set color to white
+          style={{ flex: 1, marginRight: '8px', color: 'white' }}
           InputProps={{
             style: {
-              color: 'white', // Set input text color to white
+              color: 'white',
             },
           }}
         />
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </div>
-      < br/>
+      <br />
       <Grid container spacing={4}>
         {searchResults.map((book) => (
           <Grid item key={book.bookId} xs={12} sm={6} md={4} lg={3}>
-            <Card onClick={() => onSelectBook(book)} sx={{ cursor: "pointer" }}>
+            <Card
+              onClick={() => onSelectBook(book)}
+              sx={{ cursor: "pointer" }}
+            >
               <CardMedia
                 component="img"
                 height="140"
@@ -75,6 +78,32 @@ const SearchBar = ({ onSelectBook }) => {
                 <Typography variant="subtitle1" color="text.secondary">
                   Author: {book.authors.join(", ")}
                 </Typography>
+                {/* Buttons to save to Wishlist and Currently Reading */}
+                <div style={{ marginTop: '16px', display: 'flex' }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Handle Wishlist functionality here
+                    }}
+                    sx={{ width: '50%' }} // Set a common width for both buttons
+                  >
+                    Save to Wishlist
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={(e) => {
+                    e.stopPropagation();
+                    // Handle Currently Reading functionality here
+                    }}
+                    style={{ marginLeft: '8px', padding: '8px', fontSize: '12px' }} // Adjust padding and font size
+                    sx={{ width: '50%' }} // Set a common width for both buttons
+                    >
+                    Currently Reading
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </Grid>
