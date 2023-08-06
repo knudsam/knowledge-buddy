@@ -2,20 +2,18 @@ import decode from 'jwt-decode';
 
 class AuthService {
     getProfile() {
-        const token = this.getToken();
-        return decode(token);
+        return decode(this.getTokentoken());
     }
 
     loggedIn() {
         const token = this.getToken();
-        if (!token) {
-            return false;
-        } else if (this.isTokenExpired(token)) {
-            localStorage.removeItem('id_token');
-            return false;
-        } else {
-            return true;
-        }
+        const user = decode(token);
+        const isTokenExpired = this.isTokenExpired(token);
+    
+        return {
+            loggedIn: !!token && !isTokenExpired,
+            userId: user.id || null,
+        };
     }
 
     isTokenExpired(token) {
