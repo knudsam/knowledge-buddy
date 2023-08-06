@@ -15,7 +15,7 @@ const SEARCH_BOOKS = gql`
   }
 `;
 
-const SearchBar = ({ onSelectBook, onAddToReadingList, onAddToWishList }) => {
+const SearchBar = ({ onSelectBook }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
 
@@ -85,7 +85,7 @@ const SearchBar = ({ onSelectBook, onAddToReadingList, onAddToWishList }) => {
                     color="primary"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onAddToWishList();
+                      // Handle Wishlist functionality here
                     }}
                     sx={{ width: '50%' }} // Set a common width for both buttons
                   >
@@ -95,12 +95,12 @@ const SearchBar = ({ onSelectBook, onAddToReadingList, onAddToWishList }) => {
                     variant="outlined"
                     color="primary"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      onAddToReadingList();
+                    e.stopPropagation();
+                    // Handle Currently Reading functionality here
                     }}
                     style={{ marginLeft: '8px', padding: '8px', fontSize: '12px' }} // Adjust padding and font size
                     sx={{ width: '50%' }} // Set a common width for both buttons
-                  >
+                    >
                     Currently Reading
                   </Button>
                 </div>

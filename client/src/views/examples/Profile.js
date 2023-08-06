@@ -14,7 +14,6 @@ import {
 } from 'reactstrap';
 import { useAuth } from '../../utils/AuthContext'; 
 import UserHeader from 'components/Headers/UserHeader'; 
-import SearchBar from './Searchbar';
 
 const GET_USER_PROFILE = gql`
   query GetUserProfile {
@@ -67,7 +66,6 @@ const Profile = () => {
   });
   const [readingList, setReadingList] = useState([]);
   const [wishList, setWishList] = useState([]);
-  const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     if (data?.me) {
@@ -93,19 +91,22 @@ const Profile = () => {
         },
       });
 
-      // Handle the data after update if needed
+     
 
     } catch (error) {
       console.error('Profile update error:', error);
     }
   };
 
-  const handleAddToReadingList = (book) => {
-    setReadingList((prevReadingList) => [...prevReadingList, book.title]);
+  if (loading) {
+    return null;
+  }
+   const handleRemoveFromReadingList = () => {
+    setReadingList(readingList.filter(item => item !== profileData.username));
   };
 
-  const handleAddToWishList = (book) => {
-    setWishList((prevWishList) => [...prevWishList, book.title]);
+  const handleRemoveFromWishList = () => {
+    setWishList(wishList.filter(item => item !== profileData.username));
   };
 
   if (loading) {
@@ -165,7 +166,7 @@ const Profile = () => {
                         <Button
                           color="danger"
                           size="sm"
-                          onClick={() => setReadingList((prevList) => prevList.filter((book) => book !== item))}
+                          onClick={handleRemoveFromReadingList}
                         >
                           Remove
                         </Button>
@@ -190,7 +191,7 @@ const Profile = () => {
                         <Button
                           color="danger"
                           size="sm"
-                          onClick={() => setWishList((prevList) => prevList.filter((book) => book !== item))}
+                          onClick={handleRemoveFromWishList}
                         >
                           Remove
                         </Button>
@@ -203,11 +204,6 @@ const Profile = () => {
           </Col>
         </Row>
       </Container>
-      <SearchBar
-        onSelectBook={setSelectedBook}
-        onAddToReadingList={() => handleAddToReadingList(selectedBook)}
-        onAddToWishList={() => handleAddToWishList(selectedBook)}
-      />
     </>
   );
 };
