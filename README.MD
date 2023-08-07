@@ -29,7 +29,7 @@ For using the deployed website, please follow the steps below:
 
 To use Knowledge Buddy locally, please follow the steps below:
 
-1. Run the development server: `npm start`
+1. Run the development server: `npm run build`
 2. Open your web browser and navigate to `http://localhost:3001`
 3. Enter a book title or keyword in the search bar and press Enter or click the "Search" button.
 4. View the search results, including book covers and author information.

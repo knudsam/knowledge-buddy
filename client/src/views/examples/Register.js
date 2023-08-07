@@ -42,15 +42,14 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+  
     try {
       const { data } = await registerUser({
         variables: { username, email, password },
       });
-
-      login(data.addUser.user);
-
-      // Handle successful registration and navigate to /admin/index
+  
+      login(data.addUser.token); 
+  
       navigate('/admin/index');
     } catch (error) {
       console.error('Registration error:', error);

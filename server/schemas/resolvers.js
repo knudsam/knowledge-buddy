@@ -1,6 +1,7 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Thought } = require('../models');
 const { signToken } = require('../utils/auth');
+const jwt = require('jsonwebtoken');
 
 const resolvers = {
   Query: {
@@ -35,7 +36,7 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
-      const token = signToken(user);
+      const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1h' });
       return { token, user };
     },
     login: async (parent, { email, password }) => {
@@ -51,7 +52,9 @@ const resolvers = {
         throw new AuthenticationError('Incorrect credentials');
       }
 
-      const token = signToken(user);
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '1d', 
+      });
 
       return { token, user };
     },

@@ -33,13 +33,13 @@ class AuthService {
 
     login(idToken) {
         localStorage.setItem('id_token', idToken);
-        window.location.assign('/');
+        window.location.assign('/admin/index');
     }
 
     logout() {
         localStorage.removeItem('id_token');
-        window.location.assign('/');
-    }
+        window.location.assign('/auth/login');
+      }
 }
 
 const authService = new AuthService();
