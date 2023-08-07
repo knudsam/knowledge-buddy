@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import { useAuth } from '../../utils/AuthContext'; 
 import UserHeader from 'components/Headers/UserHeader'; 
+import Logout from './Logout';
 
 const GET_USER_PROFILE = gql`
   query GetUserProfile {
@@ -203,6 +204,8 @@ const Profile = () => {
             </Card>
           </Col>
         </Row>
+        <br /> 
+        <Logout />
       </Container>
     </>
   );

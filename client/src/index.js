@@ -15,12 +15,12 @@ import './assets/css/style.css';
 import AdminLayout from 'layouts/Admin.js';
 import AuthLayout from 'layouts/Auth.js';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient(); 
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider> {/* Wrap with AuthProvider */}
+      <AuthProvider> 
         <BrowserRouter>
           <Routes>
             <Route path="/admin/*" element={<AdminLayout />} />

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import React, { useState } from 'react'; 
 import {
   Button,
   Card,
@@ -15,7 +14,8 @@ import {
   Col,
 } from 'reactstrap';
 
-import { useAuth } from '../../utils/AuthContext'; // Import useAuth from AuthContext
+import authService from '../../utils/auth';
+import { useMutation, gql } from '@apollo/client';
 
 const LOGIN_USER = gql`
   mutation LoginUser($email: String!, $password: String!) {
@@ -31,27 +31,31 @@ const LOGIN_USER = gql`
 `;
 
 const Login = () => {
-  const { login } = useAuth(); // Access login function from AuthContext
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
+      console.log('Attempting login...');
+  
       const { data } = await loginUser({
         variables: { email, password },
       });
-
-      login(data.login.user); // Call login function with user data
-
+  
+      console.log('Received data:', data);
+  
+      authService.login(data.login.token);
+  
+      console.log('Logged in successfully');
+  
       // Handle successful login (e.g., redirect)
     } catch (error) {
       console.error('Login error:', error);
     }
-  };
+  };  
 
   return (
     <>
