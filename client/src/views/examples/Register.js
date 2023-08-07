@@ -15,7 +15,7 @@ import {
   Col,
 } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
-
+import jwt_decode from 'jwt-decode'; 
 import { useAuth } from '../../utils/AuthContext'; 
 
 const REGISTER_USER = gql`
@@ -48,7 +48,15 @@ const Register = () => {
         variables: { username, email, password },
       });
   
-      login(data.addUser.token); 
+      const token = data.addUser.token;
+  
+      // Decode the token manually to get the username
+      const decodedToken = jwt_decode(token); // Use jwt_decode directly
+      const usernameFromToken = decodedToken.user.username;
+  
+      // Set the username and log in
+      setUsername(usernameFromToken);
+      login(token);
   
       navigate('/admin/index');
     } catch (error) {

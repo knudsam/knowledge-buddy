@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+import { PropTypes } from "prop-types"; 
+import "./pp.jpeg"; 
 
 // reactstrap components
 import {
@@ -104,10 +105,7 @@ const Sidebar = (props) => {
         </NavbarBrand>
         {/* User */}
         <Nav className="align-items-center d-md-none">
-          <UncontrolledDropdown nav>
-            <DropdownToggle nav className="nav-link-icon">
-              <i className="ni ni-bell-55" />
-            </DropdownToggle>
+          <UncontrolledDropdown nav> 
             <DropdownMenu
               aria-labelledby="navbar-default_dropdown_1"
               className="dropdown-menu-arrow"
@@ -125,7 +123,7 @@ const Sidebar = (props) => {
                 <span className="avatar avatar-sm rounded-circle">
                   <img
                     alt="..."
-                    src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                    src={require("./pp.jpeg")}
                   />
                 </span>
               </Media>

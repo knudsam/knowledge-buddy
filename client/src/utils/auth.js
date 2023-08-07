@@ -2,8 +2,12 @@ import decode from 'jwt-decode';
 
 class AuthService {
     getProfile() {
-        return decode(this.getTokentoken());
-    }
+        const token = this.getToken();
+        if (token) {
+          return decode(token);
+        }
+        return null;
+      }
 
     loggedIn() {
         const token = this.getToken();
@@ -33,6 +37,7 @@ class AuthService {
 
     login(idToken) {
         localStorage.setItem('id_token', idToken);
+        console.log(idToken);
         window.location.assign('/admin/index');
     }
 
