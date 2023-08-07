@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import { useAuth } from '../../utils/AuthContext'; 
 import UserHeader from 'components/Headers/UserHeader'; 
-import Logout from './Logout';
+import Logout from './Logout'; 
 
 const GET_USER_PROFILE = gql`
   query GetUserProfile {
@@ -119,38 +119,7 @@ const Profile = () => {
       <UserHeader />
       {/* Page content */}
       <Container className="mt--7" fluid>
-        <Row>
-          <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
-            <Card className="card-profile shadow">
-              <Row className="justify-content-center">
-                <Col className="order-lg-2" lg="3">
-                  <div className="card-profile-image">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="rounded-circle"
-                        src={require("../../assets/img/theme/team-4-800x800.jpg")}
-                      />
-                      <br />
-                      <br />
-                      <br />
-                      <br />
-                      <br />
-                    </a>
-                  </div>
-                </Col>
-              </Row>
-              <CardBody className="pt-0 pt-md-4">
-                <div className="text-center">
-                  <h3>{profileData.username}</h3>
-                  <div className="h5 font-weight-300">
-                    <i id="the-info" className="ni location_pin mr-2" />
-                    {profileData.aboutMe}
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
+        <Row> 
           <Col className="order-xl-1" xl="8">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
