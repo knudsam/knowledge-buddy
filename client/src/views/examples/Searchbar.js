@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery, useMutation, gql } from "@apollo/client";
 import { Card, CardContent, CardMedia, Typography, TextField, Button, Grid } from "@mui/material";
 
 const SEARCH_BOOKS = gql`
@@ -15,9 +15,44 @@ const SEARCH_BOOKS = gql`
   }
 `;
 
+const ADD_TO_COLLECTION = gql`
+  mutation AddToCollection($collection: String!, $book: BookInput!) {
+    addToCollection(collection: $collection, book: $book) {
+      _id
+      collections {
+        type
+        books {
+          authors
+          description
+          bookId
+          image
+          link
+          title
+        }
+      }
+    }
+  }
+`;
+
 const SearchBar = ({ onSelectBook }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS);
+  const [addToWishlist] = useMutation(ADD_TO_COLLECTION, {
+    onError: (error) => {
+      console.error("Error adding to wishlist:", error);
+    },
+    onCompleted: (data) => {
+      console.log("Added to wishlist:", data.addToCollection);
+    },
+  });
+  const [addToCurrentlyReading] = useMutation(ADD_TO_COLLECTION, {
+    onError: (error) => {
+      console.error("Error adding to currently reading:", error);
+    },
+    onCompleted: (data) => {
+      console.log("Added to currently reading:", data.addToCollection);
+    },
+  });
 
   const handleSearch = () => {
     searchBooks({
@@ -37,7 +72,7 @@ const SearchBar = ({ onSelectBook }) => {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', width: "80vw" }}>
         <TextField 
           variant="outlined"
           placeholder="Search Books..."
@@ -55,7 +90,7 @@ const SearchBar = ({ onSelectBook }) => {
             },
           }}
         />
-        <Button variant="contained" onClick={handleSearch}>Search</Button>
+        <Button variant="contained" style={{padding: "15.5px 6px"}} onClick={handleSearch}>Search</Button>
       </div>
       <br />
       <Grid container spacing={4}>
@@ -78,29 +113,32 @@ const SearchBar = ({ onSelectBook }) => {
                 <Typography variant="subtitle1" color="text.secondary">
                   Author: {book.authors.join(", ")}
                 </Typography>
-                {/* Buttons to save to Wishlist and Currently Reading */}
                 <div style={{ marginTop: '16px', display: 'flex' }}>
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Handle Wishlist functionality here
+                    onClick={() => {
+                      console.log("Adding to Wishlist:", book);
+                      addToWishlist({
+                        variables: { collection: 'wishlist', book: book }
+                      });
                     }}
-                    sx={{ width: '50%' }} // Set a common width for both buttons
+                    sx={{ width: '50%' }}
                   >
                     Save to Wishlist
                   </Button>
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={(e) => {
-                    e.stopPropagation();
-                    // Handle Currently Reading functionality here
+                    onClick={() => {
+                      console.log("Adding to Currently Reading:", book);
+                      addToCurrentlyReading({
+                        variables: { collection: 'currentlyReading', book: book }
+                      });
                     }}
-                    style={{ marginLeft: '8px', padding: '8px', fontSize: '12px' }} // Adjust padding and font size
-                    sx={{ width: '50%' }} // Set a common width for both buttons
-                    >
+                    style={{ marginLeft: '8px', padding: '8px', fontSize: '12px' }}
+                    sx={{ width: '50%' }}
+                  >
                     Currently Reading
                   </Button>
                 </div>

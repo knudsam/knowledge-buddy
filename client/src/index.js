@@ -27,7 +27,6 @@ ReactDOM.render(
             <Route path="/auth/*" element={<AuthLayout />} />
             <Route path="*" element={<Navigate to="/admin/index" replace />} />
           </Routes>
-          <br />
         </BrowserRouter>
       </AuthProvider>
     </QueryClientProvider>

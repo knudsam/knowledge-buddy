@@ -8,9 +8,8 @@ const Index = (props) => {
   const [selectedBook, setSelectedBook] = useState(null);
 
   return (
-    <ApolloProvider client={client}>
       <Container className="mt-3" fluid>
-        <Row>
+        <Row style={{width: "80vw !important"}}>
           <Col className="mb-5 mb-xl-0" xl="8">
             <SearchBar onSelectBook={setSelectedBook} />
           </Col>
@@ -30,7 +29,6 @@ const Index = (props) => {
           )}
         </Row>
       </Container>
-    </ApolloProvider>
   );
 };
 
