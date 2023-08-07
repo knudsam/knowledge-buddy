@@ -39,30 +39,40 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [registerUser, { loading, error }] = useMutation(REGISTER_USER);
+  const [wishlistcount, setWishlistCount] = useState([]); 
 
   const handleRegister = async (e) => {
     e.preventDefault();
   
     try {
-      const { data } = await registerUser({
+      const result = await registerUser({
         variables: { username, email, password },
       });
   
-      const token = data.addUser.token;
+      console.log('Mutation Result:', result);
   
-      // Decode the token manually to get the username
-      const decodedToken = jwt_decode(token); // Use jwt_decode directly
-      const usernameFromToken = decodedToken.user.username;
+      const token = result.data?.addUser?.token;
   
-      // Set the username and log in
-      setUsername(usernameFromToken);
-      login(token);
+      if (token) {
+        // Decode the token manually to get the username
+        const decodedToken = jwt_decode(token);
+        const usernameFromToken = decodedToken.user.username;
+        const wishlistCount = decodedToken.user.wishlistCount; // Use the correct field name
   
-      navigate('/admin/index');
+        // Set the username and log in
+        setUsername(usernameFromToken);
+        setWishlistCount(wishlistCount); // Set the wishlist count
+  
+        login(token);
+  
+        navigate('/admin/index');
+      } else {
+        console.error('Registration error:', result);
+      }
     } catch (error) {
       console.error('Registration error:', error);
     }
-  };
+  };  
 
   return (
     <Col lg="6" md="8">

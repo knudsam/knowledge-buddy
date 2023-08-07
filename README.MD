@@ -36,6 +36,11 @@ To use Knowledge Buddy locally, please follow the steps below:
 5. Save books to your Wishlist or mark them as Currently Reading using the respective buttons below each book.
 6. View your selected books in the "Wishlist" and "Currently Reading" sections on your profile page.
 
+![Home Page](./client/src/assets/img/HomePage.png)
+![Example Results](./client/src/assets/img/ExampleResults.png)
+![Login Page](./client/src/assets/img/LoginPage.png)
+![Profile Page](./client/src/assets/img/ProfilePage.png)
+
 ## Features
 
 - Personalized Profile Page - You can update your profile picture, username, and password. Also, you can view your "Books Wishlist" and "Currently Reading" lists.

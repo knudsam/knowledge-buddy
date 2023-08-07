@@ -58,20 +58,41 @@ const resolvers = {
 
       return { token, user };
     },
-    saveBook: async (parent, { authors,description,bookId,image,link,title }, context) => {
+    addToCollection: async (parent, { collection, book }, context) => {
       if (context.user) {
-        
-
-       const user= await User.findOneAndUpdate(
+        const collectionType = context.user.collections.find(c => c.type === collection);
+        if (collectionType) {
+          collectionType.books.push(book);
+        } else {
+          context.user.collections.push({ type: collection, books: [book] });
+        }
+        await context.user.save();
+        return context.user;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    saveBookToWishlist: async (parent, { book }, context) => {
+      console.log('Resolver executed');
+      if (context.user) {
+        const user = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: {authors,description,bookId,image,link,title} } }
+          { $addToSet: { wishlist: book } }
         );
-
+        console.log('Updated User:', user); // Add this line
+        return user;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },    
+    addToCurrentlyReading: async (parent, { book }, context) => {
+      if (context.user) {
+        const user = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { currentlyReading: book } }
+        );
         return user;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(

@@ -1,8 +1,24 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-// Replace this URL with your actual GraphQL server URL
+const httpLink = createHttpLink({
+  uri: 'http://localhost:3001/graphql', // Replace with the correct URL for your server
+});
+
+const authLink = setContext((_, { headers }) => {
+  // Get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // Return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
-  uri: '/graphql', // Adjust the URL as needed
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
